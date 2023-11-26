@@ -1,65 +1,82 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>プラレールシミュレータ</title>
-<style>
-  #rail-placement-area {
-    width: 100%;
-    height: 500px;
-    border: 2px dashed #ccc;
-    position: relative;
-    margin-top: 10px;
-  }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>レールシミュレータ</title>
+    <style>
+      #rail-placement-area {
+        width: 80%;
+        height: 500px;
+        border: 2px dashed #ccc;
+        margin-top: 10px;
+      }
 
-  .rail-type-selector {
-    cursor: pointer;
-    padding: 10px;
-    margin-right: 5px;
-    border: 1px solid #000;
-    display: inline-block;
-  }
+      .rail-type-selector {
+        cursor: pointer;
+        padding: 10px;
+        margin-right: 5px;
+        border: 1px solid #000;
+        display: inline-block;
+      }
 
-  .selected {
-    border-color: blue;
-  }
-</style>
-</head>
-<body>
+      .selected {
+        border-color: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>レールシミュレータ</h1>
 
-<h1>プラレールシミュレータ</h1>
+    <div>
+      <div class="rail-type-selector" data-rail-type="straight">直線レール</div>
+      <div class="rail-type-selector" data-rail-type="curve">カーブレール</div>
+    </div>
 
-<div>
-  <div class="rail-type-selector" data-rail-type="straight">直線レール</div>
-  <div class="rail-type-selector" data-rail-type="curve">カーブレール</div>
-</div>
+    <canvas id="rail-placement-area"></canvas>
 
-<div id="rail-placement-area"></div>
+    <script src="js/fabric.min.js"></script>
+    <script type="module" src="js/RailPiece.js"></script>
+    <script type="module" src="js/main.js"></script>
 
-<script type="module" src="js/RailPiece.js"></script>
-<script type="module" src="js/main.js"></script>
-<script>
-// ここにレールを選択するためのスクリプトを追加
-document.querySelectorAll('.rail-type-selector').forEach(selector => {
-  selector.addEventListener('click', function() {
-    // すべてのセレクターから 'selected' クラスを削除
-    document.querySelectorAll('.rail-type-selector').forEach(s => s.classList.remove('selected'));
-    // 選択されたセレクターに 'selected' クラスを追加
-    this.classList.add('selected');
-    // 選択されたレールタイプを main.js に通知
-    window.dispatchEvent(new CustomEvent('railTypeSelected', { detail: this.getAttribute('data-rail-type') }));
-  });
-});
+    <script>
+      document.querySelectorAll(".rail-type-selector").forEach((selector) => {
+        selector.addEventListener("click", function () {
+          // すべてのセレクターから 'selected' クラスを削除
+          document
+            .querySelectorAll(".rail-type-selector")
+            .forEach((s) => s.classList.remove("selected"));
+          // 選択されたセレクターに 'selected' クラスを追加
+          this.classList.add("selected");
+          // 選択されたレールタイプを main.js に通知
+          window.dispatchEvent(
+            new CustomEvent("railTypeSelected", {
+              detail: this.getAttribute("data-rail-type"),
+            })
+          );
+        });
+      });
 
-// レール配置エリアへのクリックイベントをハンドル
-document.getElementById('rail-placement-area').addEventListener('click', function(e) {
-  const selectedRailType = document.querySelector('.rail-type-selector.selected')?.getAttribute('data-rail-type');
-  if (selectedRailType) {
-    // 選択されたレールタイプに応じて新しいレールピースを配置
-    window.dispatchEvent(new CustomEvent('placeRail', { detail: { railType: selectedRailType, x: e.offsetX, y: e.offsetY } }));
-  }
-});
-</script>
-</body>
+      // レール配置エリアへのクリックイベントをハンドル
+      document
+        .getElementById("rail-placement-area")
+        .addEventListener("click", function (e) {
+          const selectedRailType = document
+            .querySelector(".rail-type-selector.selected")
+            ?.getAttribute("data-rail-type");
+          if (selectedRailType) {
+            // 選択されたレールタイプに応じて新しいレールピースを配置
+            window.dispatchEvent(
+              new CustomEvent("placeRail", {
+                detail: {
+                  railType: selectedRailType,
+                  x: e.offsetX,
+                  y: e.offsetY,
+                },
+              })
+            );
+          }
+        });
+    </script>
+  </body>
 </html>

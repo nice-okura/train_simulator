@@ -1,4 +1,4 @@
-class RailPiece {
+export default class RailPiece {
     constructor(id, type, gender, connections, angle) {
       this.id = id; // ユニークな識別子
       this.type = type; // 'straight' または 'curve'
