@@ -61,31 +61,32 @@ function displayRailPiece(railPiece, x, y) {
       height: 10
     });
   } else if (railPiece.type === "curve") {
-    // Fabric.jsで円弧を描画する場合
-    const radius = 50;
-    const startAngle = 0;
+    const radius = 100;
+    const startAngle = -90;
     const endAngle = railPiece.angle;
     
     element = new fabric.Circle({
-      left: x,
+      left: x - radius,
       top: y,
       radius: radius,
-      startAngle: startAngle * (Math.PI / 180),
-      endAngle: endAngle * (Math.PI / 180),
-      stroke: 'grey',
-      strokeWidth: 100,
-      fill: 'transparent'
+      angle: 0,
+      startAngle: startAngle,
+      endAngle: startAngle + endAngle,
+      stroke: 'gray',
+      strokeWidth: 10,
+      fill: ''
     });
   }
 
   // サイズ変更を無効にし、回転を許可する設定
   element.set({
-    hasControls: true, // コントロールを表示
+    hasControls: false, // コントロールを表示
+    hasBorders: false,
     lockScalingX: true, // X方向のスケーリングをロック
     lockScalingY: true, // Y方向のスケーリングをロック
     lockUniScaling: true, // 一様スケーリングをロック
     hasRotatingPoint: true
-    }); // 回転は許可
+    });
 
   canvas.add(element);
 }
